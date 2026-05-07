@@ -2,8 +2,6 @@ from flask import *
 import os
 from djanko_lib import *
 
-JIT = True
-
 app = Flask(__name__)
 @app.route('/<path:subpath>')
 def fetchfiles(subpath):
