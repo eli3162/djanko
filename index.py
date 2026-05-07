@@ -16,5 +16,4 @@ index.add(heading('Heading 4', level=4))
 index.add(heading('Heading 5', level=5))
 index.add(heading('Heading 6', level=6))
 
-with open(filename, 'w') as f:
-    f.write(index.compile())
+index.compile(filename)

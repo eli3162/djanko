@@ -8,8 +8,10 @@ class pyx:
         self.html = self.html.replace('</head>', f'{metadata}</head>')
     def add(self, content):
         self.html = self.html.replace('</body>', f'{content}</body>')
-    def compile(self):
-        return self.html
+    def compile(self, filename):
+        with open(filename, 'w') as f:
+            f.write(self.html)
+
     def title(self, title):
         self.html = self.html.replace('</head>', f'<title>{title}</title></head>')
     def lang(self, lang):
