@@ -11,7 +11,7 @@ class pyx:
     def compile(self, filename):
         with open(filename, 'w') as f:
             f.write(self.html)
-
+        return self.html
     def title(self, title):
         self.html = self.html.replace('</head>', f'<title>{title}</title></head>')
     def lang(self, lang):
