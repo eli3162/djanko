@@ -36,4 +36,4 @@ def fetchindex():
     else:
         return send_file(filepath)
 
-app.run(debug=True, port=3100)
+app.run(debug=True, port=80, host='0.0.0.0')
