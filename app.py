@@ -1,39 +1,23 @@
 from flask import *
 import os
+from djanko_lib import *
 
 JIT = True
 
 app = Flask(__name__)
 @app.route('/<path:subpath>')
 def fetchfiles(subpath):
-    global JIT
-    filepath = os.path.join(os.getcwd(), subpath)
-    if filepath.endswith('.py'):
-        if JIT:
-            importpath = subpath.replace('.py', '')
-            exec(f'import {importpath}')
-        
-        filepath = filepath.replace('.py', '.html')
-        with open(filepath, 'r') as f:
-            content = f.read()
-        return content
+    if subpath.endswith('.py'):
+        return serve_pyx(subpath)
     else:
-        return send_file(filepath)
+        return send_file(subpath)
         
 @app.route('/')
 def fetchindex():
-    global JIT
     subpath = 'index.py'
-    filepath = os.path.join(os.getcwd(), subpath)
-    if filepath.endswith('.py'):
-        if JIT:
-            importpath = subpath.replace('.py', '')
-            exec(f'import {importpath}')
-        filepath = filepath.replace('.py', '.html')
-        with open(filepath, 'r') as f:
-            content = f.read()
-        return content
+    if subpath.endswith('.py'):
+        return serve_pyx(subpath)
     else:
-        return send_file(filepath)
+        return send_file(subpath)
 
 app.run(debug=True, port=80, host='0.0.0.0')

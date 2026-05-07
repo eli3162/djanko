@@ -1,3 +1,6 @@
+import os
+
+
 class pyx:
     html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head><body></body></html>'
     def add_style(self, href):
@@ -8,9 +11,7 @@ class pyx:
         self.html = self.html.replace('</head>', f'{metadata}</head>')
     def add(self, content):
         self.html = self.html.replace('</body>', f'{content}</body>')
-    def compile(self, filename):
-        with open(filename, 'w') as f:
-            f.write(self.html)
+    def compile(self):
         return self.html
     def title(self, title):
         self.html = self.html.replace('</head>', f'<title>{title}</title></head>')
@@ -48,3 +49,11 @@ def style(name, value):
         css += f'{key}: {val}; '
     css += '}'
     return css
+
+def serve_pyx(filename):
+    output_variables = {}
+    filename = os.path.join(os.getcwd(), filename)
+    with open(filename, 'r') as f:
+        pyxcode = f.read()
+    exec(pyxcode, output_variables)
+    return output_variables.get('content')
