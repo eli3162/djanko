@@ -1,3 +1,4 @@
+# This home page is currently filled with a demo, but you can customize this home page to your heart's content. The 'index.py' page will always be the default home page
 from djanko_lib import pyx, heading, paragraph, image, link, style
 file = pyx()
 # You can add custom styles
