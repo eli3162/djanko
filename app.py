@@ -6,6 +6,8 @@
 # ///
 from flask import *
 from djanko_lib import *
+from djanko_lib import serve_pyx as compile_pyx
+compile_pyx('compile.py')
 
 app = Flask(__name__)
 @app.route('/<path:subpath>')
