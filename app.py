@@ -4,6 +4,7 @@ from djanko_lib import *
 app = Flask(__name__)
 @app.route('/<path:subpath>')
 def fetchfiles(subpath):
+    subpath = subpath.replace('.html', '.py')
     try:
         if subpath.endswith('.py'):
             return serve_pyx(subpath)
@@ -14,12 +15,8 @@ def fetchfiles(subpath):
         
 @app.route('/')
 def fetchindex():
-    subpath = 'index.py'
     try:
-        if subpath.endswith('.py'):
-            return serve_pyx(subpath)
-        else:
-            return send_file(subpath)
+        return serve_pyx('index.py')
     except Exception as e:
         return serve_pyx('404.py')
 
