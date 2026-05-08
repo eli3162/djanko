@@ -1,3 +1,9 @@
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "flask>=3.1.3",
+# ]
+# ///
 from flask import *
 from djanko_lib import *
 

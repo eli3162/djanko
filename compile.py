@@ -1,3 +1,4 @@
+# compile.py allows you to compile your djanko site into static html files, so that you can also host your app on a static site, like Github Pages
 import os
 from djanko_lib import serve_pyx
 files = os.listdir()
