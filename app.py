@@ -7,11 +7,15 @@
 from flask import *
 from djanko_lib import *
 from djanko_lib import serve_pyx as compile_pyx
+import configparser
 compile_pyx('compile.py')
+config = configparser.RawConfigParser()
+config.read('config.cfg')
+settings = dict(config.items('server'))
 
 # Config
-homepage = 'index.py'
-errorpage = '404.py'
+homepage = settings.get('homepage')
+errorpage = settings.get('errorpage')
 
 app = Flask(__name__)
 @app.route('/<path:subpath>')
