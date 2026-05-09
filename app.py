@@ -38,4 +38,4 @@ def fetchindex():
     except Exception as e:
         return serve_pyx(errorpage)
 
-app.run(debug=True, port=80, host='0.0.0.0')
+app.run(debug=settings.get('debug'), port=settings.get('port'), host='0.0.0.0')
