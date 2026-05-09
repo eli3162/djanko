@@ -10,7 +10,7 @@ from djanko_lib import serve_pyx as compile_pyx
 import configparser
 compile_pyx('compile.py')
 config = configparser.RawConfigParser()
-config.read('config.cfg')
+config.read('djanko_config.cfg')
 settings = dict(config.items('server'))
 
 # Config

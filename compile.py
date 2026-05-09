@@ -3,7 +3,7 @@ import os
 from djanko_lib import serve_pyx
 import configparser
 config = configparser.RawConfigParser()
-config.read('config.cfg')
+config.read('djanko_config.cfg')
 settings = dict(config.items('compiler'))
 
 compileignore = settings.get('compilerignorelist')
