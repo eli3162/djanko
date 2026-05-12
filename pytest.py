@@ -2,6 +2,7 @@ from djanko_lib import *
 file = pyx()
 file.title('Pyodide Test')
 file.add(heading('Loading...', id='loading-element'))
-file.python(pyscript('pyscript.script.py'))
+file.add(python(pyscript('djanko_lib_client.py')))
+file.add(python(pyscript('pytest.script.py')))
 
 content = file.compile()

@@ -1,6 +1,6 @@
 import os
 class pyx:
-    html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css"/><script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script></head><body></body></html>'
+    html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css" /><script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script></script></head><body></body></html>'
     def add_style(self, href):
         self.html = self.html.replace('</head>', f'<link rel="stylesheet" href="{href}"></head>')
     def add_script(self, src):
@@ -19,11 +19,6 @@ class pyx:
         self.html = self.html.replace('<head>', f'<head><meta charset="{charset}">')
     def viewport(self, content):
         self.html = self.html.replace('<head>', f'<head><meta name="viewport" content="{content}">')
-    def python(self, code, compiler='py', terminal=False):
-        if terminal:
-            self.html = self.html.replace('</body>', f'<script type="{compiler}" terminal>{code}</script></body>')
-        else:
-            self.html = self.html.replace('</body>', f'<script type="{compiler}">{code}</script></body>')
 
 def paragraph(text, styles=None, id=None):
     if styles:
@@ -74,16 +69,13 @@ def br():
 def hr():
     return '<hr>'
 
-def python(code, compiler='py', terminal=False):
-    if terminal:
-        return ('</body>', f'<script type="{compiler}" terminal>{code}</script></body>')
-    else:
-        return ('</body>', f'<script type="{compiler}">{code}</script></body>')
+def python(code):
+    return (f'<script type="py">{code}</script>')
 
 def pyscript(filename):
     filename = os.path.join(os.getcwd(), filename)
     with open(filename, 'r') as f:
-        return f.read().replace('from djanko_lib import *', '')
+        return f.read().replace('from djanko_lib_client import *', '')
 
 def style(name, value):
     css = '.' + name + ' { '

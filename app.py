@@ -8,7 +8,7 @@ from flask import *
 from djanko_lib import *
 from djanko_lib import serve_pyx as compile_pyx
 import configparser, ast
-compile_pyx('compile.py')
+import compile
 config = configparser.RawConfigParser()
 config.read('djanko_config.cfg')
 settings = dict(config.items('server'))
