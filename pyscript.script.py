@@ -89,6 +89,5 @@ async def main():
         element.style.top = f"{y}px"
         element.style.fontSize = f"{50}px"
         await asyncio.sleep(0.01)
-
 main()
 
