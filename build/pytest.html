@@ -59,6 +59,17 @@ async def main():
             y = y + tracking_interval
         if key_pressed('d'):
             x = x + tracking_interval
+        if key_pressed('i'):
+            gif_x = 0
+            gif = document.createElement("div")
+            gif.innerHTML = """<img src="https://media1.tenor.com/m/wCxmu-WUQo4AAAAd/yaai-virus.gif" alt="GIF" />"""
+            document.body.appendChild(gif)
+            gif.style.position = 'absolute'
+            for i in range(100):
+                gif_x = gif_x + 10
+                gif.style.left = f"{gif_x}"
+                await asyncio.sleep(0.01)
+
 
         mouse_position_tuple = mouse_pos()
         client_mouse_x = mouse_position_tuple[0]
@@ -79,4 +90,6 @@ async def main():
         element.style.fontSize = f"{50}px"
         await asyncio.sleep(0.01)
 
-main()</script></body></html>
+main()
+
+</script></body></html>
