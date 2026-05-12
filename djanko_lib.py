@@ -1,6 +1,6 @@
 import os
 class pyx:
-    html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"></head><body></body></html>'
+    html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css"/><script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script></head><body></body></html>'
     def add_style(self, href):
         self.html = self.html.replace('</head>', f'<link rel="stylesheet" href="{href}"></head>')
     def add_script(self, src):
@@ -19,27 +19,71 @@ class pyx:
         self.html = self.html.replace('<head>', f'<head><meta charset="{charset}">')
     def viewport(self, content):
         self.html = self.html.replace('<head>', f'<head><meta name="viewport" content="{content}">')
+    def python(self, code, compiler='py', terminal=False):
+        if terminal:
+            self.html = self.html.replace('</body>', f'<script type="{compiler}" terminal>{code}</script></body>')
+        else:
+            self.html = self.html.replace('</body>', f'<script type="{compiler}">{code}</script></body>')
 
-def paragraph(text, styles=None):
+def paragraph(text, styles=None, id=None):
     if styles:
-        return (f'<p class="{styles}">{text}</p>')
-    return (f'<p>{text}</p>')
-def heading(text, level=1, styles=None):
+        if id:
+            return (f'<p id="{id}" class="{styles}">{text}</p>')
+        else:
+            return (f'<p class="{styles}">{text}</p>')
+    else:
+        if id:
+            return (f'<p id="{id}">{text}</p>')
+        else:
+            return (f'<p>{text}</p>')
+def heading(text, level=1, styles=None, id=None):
     if styles:
-        return (f'<h{level} class="{styles}">{text}</h{level}>')
-    return (f'<h{level}>{text}</h{level}>')
-def image(src, alt='', styles=None):
+        if id:
+            return (f'<h{level} id="{id}" class="{styles}">{text}</h{level}>')
+        else:
+            return (f'<h{level} class="{styles}">{text}</h{level}>')
+    else:
+        if id:
+            return (f'<h{level} id="{id}">{text}</h{level}>')
+        else:
+            return (f'<h{level}>{text}</h{level}>')
+def image(src, alt='', styles=None, id=None):
     if styles:
-        return (f'<img src="{src}" alt="{alt}" class="{styles}">')
-    return (f'<img src="{src}" alt="{alt}">')
-def link(href, text, styles=None):
+        if id:
+            return (f'<img src="{src}" alt="{alt}" id="{id}" class="{styles}">')
+        else:
+            return (f'<img src="{src}" alt="{alt}" class="{styles}">')
+    else:
+        if id:
+            return (f'<img src="{src}" alt="{alt}" id="{id}">')
+        else:
+            return (f'<img src="{src}" alt="{alt}">')
+def link(href, text, styles=None, id=None):
     if styles:
-        return (f'<a href="{href}" class="{styles}">{text}</a>')
-    return (f'<a href="{href}">{text}</a>')
+        if id:
+            return (f'<a href="{href}" class="{styles}" id="{id}">{text}</a>')
+        else:
+            return (f'<a href="{href}" class="{styles}">{text}</a>')
+    else:
+        if id:
+            return (f'<a href="{href}" id="{id}">{text}</a>')
+        else:
+            return (f'<a href="{href}">{text}</a>')
 def br():
     return '<br>'
 def hr():
     return '<hr>'
+
+def python(code, compiler='py', terminal=False):
+    if terminal:
+        return ('</body>', f'<script type="{compiler}" terminal>{code}</script></body>')
+    else:
+        return ('</body>', f'<script type="{compiler}">{code}</script></body>')
+
+def pyscript(filename):
+    filename = os.path.join(os.getcwd(), filename)
+    with open(filename, 'r') as f:
+        return f.read().replace('from djanko_lib import *', '')
 
 def style(name, value):
     css = '.' + name + ' { '
@@ -56,3 +100,6 @@ def serve_pyx(filename):
         pyxcode = f.read()
     exec(pyxcode, output_variables)
     return output_variables.get('content')
+
+def script(code):
+    return ('</body>', f'<script>{code}</script></body>')

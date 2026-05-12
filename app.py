@@ -7,15 +7,18 @@
 from flask import *
 from djanko_lib import *
 from djanko_lib import serve_pyx as compile_pyx
-import configparser
+import configparser, ast
 compile_pyx('compile.py')
 config = configparser.RawConfigParser()
 config.read('djanko_config.cfg')
 settings = dict(config.items('server'))
-
+compilersettings = dict(config.items('compiler'))
+compileignore = ast.literal_eval(compilersettings.get('compilerignorelist'))
 # Config
-homepage = settings.get('homepage')
-errorpage = settings.get('errorpage')
+homepage = ast.literal_eval(settings.get('homepage'))
+errorpage = ast.literal_eval(settings.get('errorpage'))
+print('Homepage: ', homepage)
+print('Errorpage: ', errorpage)
 
 app = Flask(__name__)
 @app.route('/<path:subpath>')
@@ -24,7 +27,14 @@ def fetchfiles(subpath):
     subpath = subpath.replace('.html', '.py')
     try:
         if subpath.endswith('.py'):
-            return serve_pyx(subpath)
+            docompile = True
+            for j in range(len(compileignore)):
+                if compileignore[j] in subpath:
+                    docompile = False 
+            if docompile:
+                return serve_pyx(subpath)
+            else:
+                return send_file(subpath)
         else:
             return send_file(subpath)
     except Exception as e:
