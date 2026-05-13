@@ -1,5 +1,5 @@
 # This home page is currently filled with a demo, but you can customize this home page to your heart's content. The 'index.py' page will always be the default home page
-from djanko_lib import pyx, heading, paragraph, image, link, style
+from djanko_lib import *
 file = pyx()
 # You can add custom styles
 file.add(style('picture', ['width: 500px', 'length: 500px']))
@@ -29,5 +29,12 @@ file.add(heading('Heading 6', level=6))
 # You can also add custom HTML elements: file.add('<p>Custom Element</p>')
 file.add(heading(r"# You can also add custom HTML elements:", level=6))
 file.add('<p>Custom Element</p>')
+
+# You can even run Python with Pyodide to change elements in the HTML DOM: file.add(python(pyscript('djanko_lib_client.py')))
+file.add(heading(r"# You can even run Python with Pyodide to change elements in the HTML DOM: file.add(python(pyscript('djanko_lib_client.py')))", level=6))
+file.add(heading('Loading...', id='loading-element'))
+file.add(heading('.', id='sprite'))
+file.add(python(pyscript('djanko_lib_client.py')))
+file.add(python(pyscript('pytest.script.py')))
 
 content = file.compile()

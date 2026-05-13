@@ -1,1 +1,115 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css" /><script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script></script><title>djanko demo</title></head><body><style>.picture { width: 500px;length: 500px;}</style><h1>djanko webpage</h1><p>This is a simple webpage generated using djanko</p><p>djanko removes the need for learning HTML with Python</p><p>example image:</p><h6># You can add images: file.add(image('/dango.png', alt=' example image'))</h6><img src="/dango.png" alt=" example image"><h6># You can apply styles to any element, like an image: file.add(style('picture', ['width: 500px', 'length: 500px'])), then: file.add(image('/dango.png', alt=' example image', styles='picture'))</h6><img src="/dango.png" alt=" example image" class="picture"><h6># You can embed links as paragraphs, and parents and children structure also works here: file.add(paragraph(link('/', 'example link')))</h6><p><a href="/">example link</a></p><p>example headings:</p><h6># Headings can have varing levels of size, ranging from 1, biggest, to 6, smallest: file.add(heading('Heading 1', level=1))</h6><h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6><h6># You can also add custom HTML elements:</h6><p>Custom Element</p></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css" /><script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script></script><title>djanko demo</title></head><body><style>.picture { width: 500px;length: 500px;}</style><h1>djanko webpage</h1><p>This is a simple webpage generated using djanko</p><p>djanko removes the need for learning HTML with Python</p><p>example image:</p><h6># You can add images: file.add(image('/dango.png', alt=' example image'))</h6><img src="/dango.png" alt=" example image"><h6># You can apply styles to any element, like an image: file.add(style('picture', ['width: 500px', 'length: 500px'])), then: file.add(image('/dango.png', alt=' example image', styles='picture'))</h6><img src="/dango.png" alt=" example image" class="picture"><h6># You can embed links as paragraphs, and parents and children structure also works here: file.add(paragraph(link('/', 'example link')))</h6><p><a href="/">example link</a></p><p>example headings:</p><h6># Headings can have varing levels of size, ranging from 1, biggest, to 6, smallest: file.add(heading('Heading 1', level=1))</h6><h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3><h4>Heading 4</h4><h5>Heading 5</h5><h6>Heading 6</h6><h6># You can also add custom HTML elements:</h6><p>Custom Element</p><h6># You can even run Python with Pyodide to change elements in the HTML DOM: file.add(python(pyscript('djanko_lib_client.py')))</h6><h1 id="loading-element">Loading...</h1><h1 id="sprite">.</h1><script type="py">from js import *
+import asyncio
+import pyodide_js
+from pyodide.ffi import create_proxy
+from pyscript import *
+
+pressed_keys = set()
+
+def on_keydown(event):
+    pressed_keys.add(event.key)
+
+def on_keyup(event):
+    pressed_keys.discard(event.key)
+
+keydown_proxy = create_proxy(on_keydown)
+keyup_proxy = create_proxy(on_keyup)
+
+document.addEventListener("keydown", keydown_proxy)
+document.addEventListener("keyup", keyup_proxy)
+
+def key_pressed(key_name):
+    return key_name in pressed_keys
+
+def get_mouse_position(event):
+    global client_mouse_x, client_mouse_y
+    client_mouse_x = event.clientX
+    client_mouse_y = event.clientY
+
+mouse_proxy = create_proxy(get_mouse_position)
+
+document.addEventListener("mousemove", mouse_proxy)
+
+client_mouse_x = 0
+client_mouse_y = 0
+
+def mouse_x():
+    global client_mouse_x
+    return client_mouse_x
+
+def mouse_y():
+    global client_mouse_y
+    return client_mouse_y
+
+def create_element(html):
+    element = document.createElement("div")
+    element.innerHTML = html
+    document.body.appendChild(element)
+    return element
+</script><script type="py">
+from js import *
+import asyncio
+import pyodide_js
+from pyodide.ffi import create_proxy
+import math, sys
+
+async def main():
+    element = document.getElementById("loading-element")
+    sprite = document.getElementById("sprite")
+    element.style.color = "red"
+    element.textContent = "Pyodide Loaded"
+    element.style.position = 'absolute'
+    sprite.style.position = 'absolute'
+    element.style.fontSize = "50px"
+    element.style.left = '0px'
+    element.style.top = '0px'
+    x = 500
+    y = 500
+    run_speed = 3
+    tracking_interval = 4
+    rotation = 0
+    marker = document.createElement("div")
+    marker.innerHTML = '<p>.</p>'
+    document.body.appendChild(marker)
+    await asyncio.sleep(0.01)
+    marker.style.position = 'absolute'
+
+    while True:
+        rotation = rotation + 2
+        if key_pressed('c'):
+            create_element('<p>p</p>')
+        if key_pressed('w'):
+            y = y - tracking_interval
+        if key_pressed('a'):
+            x = x - tracking_interval
+        if key_pressed('s'):
+            y = y + tracking_interval
+        if key_pressed('d'):
+            x = x + tracking_interval
+
+        client_mouse_x = mouse_x()
+        client_mouse_y = mouse_y()
+        delta_x = client_mouse_x - x
+        delta_y = client_mouse_y - y
+        distance_away = math.sqrt(math.pow(delta_x, 2) + math.pow(delta_y, 2))
+        element.textContent = 'Python running in the web browser'
+        if distance_away < 100:
+            while not run_speed > delta_x > -run_speed or not run_speed > delta_y > -run_speed:
+                delta_y = delta_y / 2
+                delta_x = delta_x / 2
+            x = x - delta_x
+            y = y - delta_y
+
+        marker.style.top = y
+        marker.style.left = x
+        element.style.transform = f"rotate({rotation}deg)"
+        #element.style.transition = f"transform {0.01}s ease"
+        element.style.left = f"{x - 374}px"
+        element.style.top = f"{y - 16}px"
+        sprite.style.left = f"{x}px"
+        sprite.style.top = f"{y}px"
+        element.style.fontSize = f"{50}px"
+        await asyncio.sleep(0.01)
+main()
+
+</script></body></html>
