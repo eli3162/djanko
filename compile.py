@@ -1,4 +1,12 @@
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "python-minifier>=3.2.0",
+# ]
+# ///
+
 # compile.py allows you to compile your djanko site into static html files, so that you can also host your app on a static site, like Github Pages
+import python_minifier
 import os, ast
 from djanko_lib import serve_pyx
 import configparser

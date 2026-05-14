@@ -1,4 +1,11 @@
+# /// script
+# requires-python = ">=3.14"
+# dependencies = [
+#     "python-minifier>=3.2.0",
+# ]
+# ///
 import os
+import python_minifier
 class pyx:
     html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css" /><script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script></script></head><body></body></html>'
     def add_style(self, href):
@@ -75,7 +82,7 @@ def python(code):
 def pyscript(filename):
     filename = os.path.join(os.getcwd(), filename)
     with open(filename, 'r') as f:
-        return f.read().replace('from djanko_lib_client import *', '')
+        return python_minifier.minify(f.read().replace('from djanko_lib_client import *', ''))
 
 def style(name, value):
     css = '.' + name + ' { '

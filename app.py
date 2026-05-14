@@ -2,6 +2,7 @@
 # requires-python = ">=3.14"
 # dependencies = [
 #     "flask>=3.1.3",
+#     "python-minifier>=3.2.0",
 # ]
 # ///
 from flask import *
