@@ -16,14 +16,18 @@ except Exception as e:
 
 
 for i in range(len(files)):
-    if files[i].endswith('.py') and not files[i] in compileignore:
-        docompile = True
-        for j in range(len(compileignore)):
-            if compileignore[j] in files[i]:
-                docompile = False 
-        if docompile:
-            compiletargets.append(files[i])
-            with open(os.path.join('build', files[i].replace('.py', '.html')), "w") as file:
-                file.write(serve_pyx(files[i]))
+    try: 
+        if files[i].endswith('.py') and not files[i] in compileignore:
+            docompile = True
+            for j in range(len(compileignore)):
+                if compileignore[j] in files[i]:
+                    docompile = False 
+            if docompile:
+                compiletargets.append(files[i])
+                with open(os.path.join('build', files[i].replace('.py', '.html')), "w") as file:
+                    file.write(serve_pyx(files[i]))
+    except Exception as e:
+        print(e)
+        pass
 
 print('Compiled targets', compiletargets)

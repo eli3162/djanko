@@ -46,3 +46,15 @@ def create_element(html):
     element.innerHTML = html
     document.body.appendChild(element)
     return element
+
+def goto(element, x, y):
+    rect = element.getBoundingClientRect()
+    height = rect.height
+    y_height = document.documentElement.clientHeight
+    left = x
+    y = y + (y_height - height)
+    top = y_height - y
+    element.style.left = f'{left}px'
+    element.style.top = f'{top}px'
+    document.body.style.overflow = "hidden"
+    return(left, top)

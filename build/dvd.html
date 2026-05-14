@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css" /><script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script></script><title>DVD Screensaver</title></head><body><h1 id="sprite">ETHAN</h1><script type="py">from js import *
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://pyscript.net/releases/2026.3.1/core.css" /><script type="module" src="https://pyscript.net/releases/2026.3.1/core.js"></script></script><title>DVD Screensaver</title></head><body><h6 id="sprite">ETHAN</h6><script type="py">from js import *
 import asyncio
 import pyodide_js
 from pyodide.ffi import create_proxy
@@ -46,34 +46,55 @@ def create_element(html):
     element.innerHTML = html
     document.body.appendChild(element)
     return element
-</script><script type="py">
+
+def goto(element, x, y):
+    rect = element.getBoundingClientRect()
+    height = rect.height
+    y_height = document.documentElement.clientHeight
+    left = x
+    y = y + (y_height - height)
+    top = y_height - y
+    element.style.left = f'{left}px'
+    element.style.top = f'{top}px'
+    document.body.style.overflow = "hidden"
+    return(left, top)</script><script type="py">
 from js import *
 import asyncio
-import math, sys
+import math, sys, random
 
 async def main():
     sprite = document.getElementById("sprite")
-    sprite.style.fontSize = "200px"
     sprite.style.position = 'absolute'
     x = 50
-    y = 50
-    rotation = 45
-    x_width = window.innerWidth - 720
-    y_width = window.innerHeight - 350
-    speed = 10
+    y = 100
+    rotation = random.randint(0, 360)
+    speed = random.randint(5, 50)
+    delta_x = math.sin(rotation * 3.14/180) * speed
+    delta_y = math.cos(rotation * 3.14/180) * speed 
+    sprite.style.fontSize = "200px"
+    await asyncio.sleep(0.01)
+    rect = sprite.getBoundingClientRect()
+    height = rect.height
+    width = rect.width
     while True:
-        x_width = window.innerWidth - 720
-        y_width = window.innerHeight - 350
+        y_height = document.documentElement.clientHeight - height
+        x_width = document.documentElement.clientWidth - width
         sprite.style.color = "blue"
-        if x_width > x >= 0 and y_width > y >= 0:
+        if x_width > x >= 0 and y_height > y >= 0:
             pass
         else:
-            rotation = rotation + 90
-            if rotation > 360:
-                rotation = rotation - 360
-        x = x + math.sin(rotation * 3.14/180) * speed
-        y = y + math.cos(rotation * 3.14/180) * speed
-        sprite.style.left = f"{x}px"
-        sprite.style.top = f"{y}px"
+            if x_width > x >= 0:
+                pass
+            else:
+                delta_x = -1 * delta_x
+            
+            if y_height > y >= 0:
+                pass
+            else:
+                delta_y = -1 * delta_y
+            
+        x = x + delta_x
+        y = y + delta_y
+        goto(sprite, x, y)
         await asyncio.sleep(0.01)
 main()</script></body></html>

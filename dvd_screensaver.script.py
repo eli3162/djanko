@@ -1,31 +1,41 @@
 from djanko_lib_client import *
 from js import *
 import asyncio
-import math, sys
+import math, sys, random
 
 async def main():
     sprite = document.getElementById("sprite")
-    sprite.style.fontSize = "200px"
     sprite.style.position = 'absolute'
     x = 50
-    y = 50
-    rotation = 45
-    x_width = window.innerWidth - 720
-    y_width = window.innerHeight - 350
-    speed = 10
+    y = 100
+    rotation = random.randint(0, 360)
+    speed = random.randint(5, 50)
+    delta_x = math.sin(rotation * 3.14/180) * speed
+    delta_y = math.cos(rotation * 3.14/180) * speed 
+    sprite.style.fontSize = "200px"
+    await asyncio.sleep(0.01)
+    rect = sprite.getBoundingClientRect()
+    height = rect.height
+    width = rect.width
     while True:
-        x_width = window.innerWidth - 720
-        y_width = window.innerHeight - 350
+        y_height = document.documentElement.clientHeight - height
+        x_width = document.documentElement.clientWidth - width
         sprite.style.color = "blue"
-        if x_width > x >= 0 and y_width > y >= 0:
+        if x_width > x >= 0 and y_height > y >= 0:
             pass
         else:
-            rotation = rotation + 90
-            if rotation > 360:
-                rotation = rotation - 360
-        x = x + math.sin(rotation * 3.14/180) * speed
-        y = y + math.cos(rotation * 3.14/180) * speed
-        sprite.style.left = f"{x}px"
-        sprite.style.top = f"{y}px"
+            if x_width > x >= 0:
+                pass
+            else:
+                delta_x = -1 * delta_x
+            
+            if y_height > y >= 0:
+                pass
+            else:
+                delta_y = -1 * delta_y
+            
+        x = x + delta_x
+        y = y + delta_y
+        goto(sprite, x, y)
         await asyncio.sleep(0.01)
 main()
