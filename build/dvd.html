@@ -59,40 +59,30 @@ def goto(element, x, y):
     document.body.style.overflow = "hidden"
     return(left, top)</script><script type="py">
 from js import *
-import asyncio
-import math, sys, random
+import math, random, asyncio
 
 async def main():
     sprite = document.getElementById("sprite")
     sprite.style.position = 'absolute'
+    sprite.style.color = "blue"
+    sprite.style.fontSize = "200px"
+    await asyncio.sleep(0.01)
+    height = sprite.getBoundingClientRect().height
+    width = sprite.getBoundingClientRect().width
     x = 50
     y = 100
     rotation = random.randint(0, 360)
     speed = random.randint(5, 50)
     delta_x = math.sin(rotation * 3.14/180) * speed
     delta_y = math.cos(rotation * 3.14/180) * speed 
-    sprite.style.fontSize = "200px"
-    await asyncio.sleep(0.01)
-    rect = sprite.getBoundingClientRect()
-    height = rect.height
-    width = rect.width
     while True:
         y_height = document.documentElement.clientHeight - height
         x_width = document.documentElement.clientWidth - width
-        sprite.style.color = "blue"
-        if x_width > x >= 0 and y_height > y >= 0:
-            pass
-        else:
-            if x_width > x >= 0:
-                pass
-            else:
+        if not x_width > x >= 0 or not y_height > y >= 0:
+            if (x_width > x >= 0) == False:
                 delta_x = -1 * delta_x
-            
-            if y_height > y >= 0:
-                pass
-            else:
+            if (y_height > y >= 0) == False:
                 delta_y = -1 * delta_y
-            
         x = x + delta_x
         y = y + delta_y
         goto(sprite, x, y)
