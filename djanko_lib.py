@@ -7,7 +7,7 @@
 import os
 import python_minifier
 class pyx:
-    html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="/pyscript_offline/pyscript/core.css" /><script type="module" src="/pyscript_offline/pyscript/core.js"></script></script></head><body></body></html>'
+    html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><link rel="stylesheet" href="https://eli3162.github.io/djanko/pyscript_offline/pyscript/core.css" /><script type="module" src="https://eli3162.github.io/djanko/pyscript_offline/pyscript/core.js"></script></script></head><body></body></html>'
     def add_style(self, href):
         self.html = self.html.replace('</head>', f'<link rel="stylesheet" href="{href}"></head>')
     def add_script(self, src):

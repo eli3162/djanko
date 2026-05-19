@@ -1,0 +1,5 @@
+{
+	"python.analysis.stubPath": "./typings",
+	"python.analysis.languageServerMode": "full",
+	"python.analysis.typeCheckingMode": "standard"
+}
